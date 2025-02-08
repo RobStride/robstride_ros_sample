@@ -1,4 +1,5 @@
 # ROS package for RobStride motor control
+This routine was reposted by RobStride Dynamics from DR.MuShibo. Sincere gratitude goes to DR.MuShibo for their development and sharing.
 
 ### USB2CAN Hardware:Canable
 
