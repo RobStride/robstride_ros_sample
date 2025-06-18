@@ -20,6 +20,11 @@
 #define T_MIN -17.0f
 #define T_MAX 17.0f
 
+#define SC_MAX 23.0f
+#define SC_MIN 0.0f
+#define SV_MAX 20.0f
+#define SV_MIN -20.0f
+#define SCIQ_MIN -23.0f
 
 #define Set_mode 	  'j' //设置控制模式
 #define Set_parameter 'p' //设置参数
@@ -93,6 +98,9 @@ typedef struct
 	float set_Kp;
 	float set_Ki;
 	float set_Kd;
+	float set_iq;
+	float set_id;
+	float set_acc;
 }Motor_Set;
 
 //RobStrite_Motor电机
@@ -122,7 +130,10 @@ public:
 	void Get_RobStrite_Motor_parameter(uint16_t Index);
 	void RobStrite_Motor_Analysis(uint8_t *DataFrame,uint32_t ID_ExtId);
 	void RobStrite_Motor_move_control(float Torque, float Angle, float Speed, float Kp, float Kd);
-	void RobStrite_Motor_Pos_control( float Speed, float Angle);
+	void RobStrite_Motor_PosPP_control(float Speed, float Acceleration, float Angle);
+	void RobStrite_Motor_Speed_control(float Current_Limits, float Accel, float Speed);
+	void RobStrite_Motor_Current_control(float IqCommand, float IdCommand);
+	void RobStrite_Motor_PosCSP_control(float Speed, float Angle);
 	void RobStrite_Motor_Set_Zero_control();
 	void Enable_Motor();
 	void Disenable_Motor( uint8_t clear_error);

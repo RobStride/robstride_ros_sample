@@ -141,6 +141,7 @@ void RobStrite_Motor::RobStrite_Get_CAN_ID()
 }
 
 /**********************************MIT CONTROL MODE****************************/
+//0.运控模式
 void RobStrite_Motor::RobStrite_Motor_move_control(float Torque, float Angle, float Speed, float Kp, float Kd)
 {
 	Motor_Set_All.set_Torque = Torque;
@@ -173,18 +174,79 @@ void RobStrite_Motor::RobStrite_Motor_move_control(float Torque, float Angle, fl
     command_pub.publish(cansendata);
 }
 
-void RobStrite_Motor::RobStrite_Motor_Pos_control(float Speed, float Angle)
+//1.位置模式（PP）
+void RobStrite_Motor::RobStrite_Motor_PosPP_control(float Speed, float Acceleration, float Angle)
 {
 	Motor_Set_All.set_speed = Speed;
+	Motor_Set_All.set_acc   = Acceleration;
 	Motor_Set_All.set_angle = Angle;
 	if (drw.run_mode.data != 1 && Pos_Info.pattern == 2)
 	{
-		Set_RobStrite_Motor_parameter(0X7005, Pos_control_mode, Set_mode);		//设置电机模式
+		Set_RobStrite_Motor_parameter(0X7005, PosPP_control_mode, Set_mode);		//设置电机模式
 		Get_RobStrite_Motor_parameter(0x7005);
-		Motor_Set_All.set_motor_mode = Pos_control_mode;
+		Motor_Set_All.set_motor_mode = PosPP_control_mode;
 	}
+	Set_RobStrite_Motor_parameter(0X7024, Motor_Set_All.set_speed, Set_parameter);
+	Set_RobStrite_Motor_parameter(0X7025, Motor_Set_All.set_acc,   Set_parameter);
+	Set_RobStrite_Motor_parameter(0X7016, Motor_Set_All.set_angle, Set_parameter);
+}
+
+//2.速度模式
+void RobStrite_Motor::RobStrite_Motor_Speed_control(float Current_Limits, float Accel, float Speed) 
+{
+  // Store the target values
+  Motor_Set_All.set_limit_cur = Current_Limits;
+  Motor_Set_All.set_accel = Accel;
+  Motor_Set_All.set_speed = Speed;
+
+  // Check if we need to change the motor mode
+  if (drw.run_mode.data != 2 && Pos_Info.pattern == 2) {
+    Set_RobStrite_Motor_parameter(0X7005, Speed_control_mode, Set_mode);
+    Get_RobStrite_Motor_parameter(0x7005);
+    Motor_Set_All.set_motor_mode = Speed_control_mode;
+  }
+
+  Motor_Set_All.set_limit_cur = float_to_uint(Motor_Set_All.set_limit_cur, SC_MIN,SC_MAX, 16);
+  Motor_Set_All.set_speed = float_to_uint(Motor_Set_All.set_speed, V_MIN,V_MAX, 16);
+  // Set parameters
+  Set_RobStrite_Motor_parameter(0X7018, Motor_Set_All.set_limit_cur, Set_parameter);
+  Set_RobStrite_Motor_parameter(0X7022, Motor_Set_All.set_accel, Set_parameter);
+  Set_RobStrite_Motor_parameter(0X700A, Motor_Set_All.set_speed, Set_parameter);
+  rclcpp::sleep_for(std::chrono::milliseconds(2));
+
+}
+//3.电流模式
+void RobStrite_Motor::RobStrite_Motor_Current_control(float IqCommand, float IdCommand) {
+  // Store the target values
+  Motor_Set_All.set_iq = IqCommand;
+  Motor_Set_All.set_id = IdCommand;
+
+  // Check if we need to change the motor mode
+  if (drw.run_mode.data != 3 && Pos_Info.pattern == 2) {
+    Set_RobStrite_Motor_parameter(0X7005, Elect_control_mode, Set_mode);
+    Get_RobStrite_Motor_parameter(0x7005);
+    Motor_Set_All.set_motor_mode = Elect_control_mode;
+  }
+  Motor_Set_All.set_iq = float_to_uint(Motor_Set_All.set_iq, SCIQ_MIN,SC_MAX, 16);
+  Set_RobStrite_Motor_parameter(0X7006, Motor_Set_All.set_iq, Set_parameter);
+  Set_RobStrite_Motor_parameter(0X7007, Motor_Set_All.set_id, Set_parameter);
+}
+//5.位置模式（CSP）
+void RobStrite_Motor::RobStrite_Motor_PosCSP_control(float Speed, float Angle)
+{
+	Motor_Set_All.set_speed = Speed;
+	Motor_Set_All.set_angle = Angle;
+	if (drw.run_mode.data != 5 && Pos_Info.pattern == 2)
+	{
+		Set_RobStrite_Motor_parameter(0X7005, PosCSP_control_mode, Set_mode);		//设置电机模式
+		Get_RobStrite_Motor_parameter(0x7005);
+		Motor_Set_All.set_motor_mode = PosCSP_control_mode;
+	}
+	Motor_Set_All.set_speed = float_to_uint(Motor_Set_All.set_speed, SC_MIN,V_MAX, 16);
 	Set_RobStrite_Motor_parameter(0X7017, Motor_Set_All.set_speed, Set_parameter);
 	Set_RobStrite_Motor_parameter(0X7016, Motor_Set_All.set_angle, Set_parameter);
+  rclcpp::sleep_for(std::chrono::milliseconds(2));
+
 }
 
 void RobStrite_Motor::RobStrite_Motor_Set_Zero_control()
