@@ -30,10 +30,11 @@
 #define Set_parameter 'p' //设置参数
 //各种控制模式
 #define move_control_mode  0 //运控模式
-#define Pos_control_mode   1 //位置模式
-#define Speed_control_mode 2 //速度模式
+#define PosPP_control_mode   1 //位置模式
+#define Speed_control_mode 2 //速度模式PP
 #define Elect_control_mode 3 //电流模式
 #define Set_Zero_mode      4 //零点模式
+#define PosCSP_control_mode 5 //位置模式CSP
 //通信地址
 #define Communication_Type_Get_ID 0x00  //获取设备的ID和64位MCU唯一标识符`
 #define Communication_Type_MotionControl 0x01  //运控模式用来向主机发送控制指令

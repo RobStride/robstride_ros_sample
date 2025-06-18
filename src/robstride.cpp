@@ -212,7 +212,6 @@ void RobStrite_Motor::RobStrite_Motor_Speed_control(float Current_Limits, float 
   Set_RobStrite_Motor_parameter(0X7018, Motor_Set_All.set_limit_cur, Set_parameter);
   Set_RobStrite_Motor_parameter(0X7022, Motor_Set_All.set_accel, Set_parameter);
   Set_RobStrite_Motor_parameter(0X700A, Motor_Set_All.set_speed, Set_parameter);
-  rclcpp::sleep_for(std::chrono::milliseconds(2));
 
 }
 //3.电流模式
@@ -245,7 +244,6 @@ void RobStrite_Motor::RobStrite_Motor_PosCSP_control(float Speed, float Angle)
 	Motor_Set_All.set_speed = float_to_uint(Motor_Set_All.set_speed, SC_MIN,V_MAX, 16);
 	Set_RobStrite_Motor_parameter(0X7017, Motor_Set_All.set_speed, Set_parameter);
 	Set_RobStrite_Motor_parameter(0X7016, Motor_Set_All.set_angle, Set_parameter);
-  rclcpp::sleep_for(std::chrono::milliseconds(2));
 
 }
 
