@@ -196,7 +196,7 @@ void RobStrite_Motor::RobStrite_Motor_Speed_control(float Current_Limits, float 
 {
   // Store the target values
   Motor_Set_All.set_limit_cur = Current_Limits;
-  Motor_Set_All.set_accel = Accel;
+  Motor_Set_All.set_acc = Accel;
   Motor_Set_All.set_speed = Speed;
 
   // Check if we need to change the motor mode
@@ -210,7 +210,7 @@ void RobStrite_Motor::RobStrite_Motor_Speed_control(float Current_Limits, float 
   Motor_Set_All.set_speed = float_to_uint(Motor_Set_All.set_speed, V_MIN,V_MAX, 16);
   // Set parameters
   Set_RobStrite_Motor_parameter(0X7018, Motor_Set_All.set_limit_cur, Set_parameter);
-  Set_RobStrite_Motor_parameter(0X7022, Motor_Set_All.set_accel, Set_parameter);
+  Set_RobStrite_Motor_parameter(0X7022, Motor_Set_All.set_acc, Set_parameter);
   Set_RobStrite_Motor_parameter(0X700A, Motor_Set_All.set_speed, Set_parameter);
 
 }
