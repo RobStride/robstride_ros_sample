@@ -15,8 +15,10 @@ public:
   MotorControlSample()
       : rclcpp::Node("motor_control_set_node"),
         motor(RobStrideMotor("can0", 0xFF, 0x01, 0)) {
-    motor.enable_motor();
 
+    motor.Get_RobStrite_Motor_parameter(0x7005);
+    usleep(1000);
+    motor.enable_motor();
     usleep(1000);
     worker_thread_ = std::thread(&MotorControlSample::excute_loop, this);
   }
@@ -37,7 +39,7 @@ public:
 
       auto [position_feedback, velocity_feedback, torque, temperature] =
           // motor.send_motion_command(0.0, position, velocity, 0.1f, 0.1f);
-          // motor.RobStrite_Motor_PosCSP_control(float Speed, float
+          // motor.RobStrite_Motor_PosPP_control(float Speed, float
           // Acceleration, float Angle);
           // motor.RobStrite_Motor_Current_control(float IqCommand, float
           // IdCommand); motor.send_velocity_mode_command(5.0f);

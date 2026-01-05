@@ -362,7 +362,7 @@ void RobStrideMotor::Get_RobStrite_Motor_parameter(uint16_t Index) {
   receive_status_frame();
 }
 
-// 位置模式（CSP）
+// 位置模式（PP）
 std::tuple<float, float, float, float>
 RobStrideMotor::RobStrite_Motor_PosPP_control(float Speed, float Acceleration,
                                               float Angle) {
