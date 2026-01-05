@@ -17,7 +17,6 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
-find_package(can_msgs REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 
 # Generate messages
@@ -49,7 +48,6 @@ set_target_properties(${PROJECT_NAME}_lib PROPERTIES
 ament_target_dependencies(${PROJECT_NAME}_lib
   rclcpp
   std_msgs
-  can_msgs
   sensor_msgs
 )
 
@@ -68,7 +66,6 @@ add_executable(rs_motor_ros2
 ament_target_dependencies(rs_motor_ros2
   rclcpp
   std_msgs
-  can_msgs
 )
 # ament_target_dependencies(enable_motor
 #   rclcpp
