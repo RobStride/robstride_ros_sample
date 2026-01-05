@@ -31,19 +31,18 @@ public:
   }
 
   void excute_loop() {
-    float position = 1.57f;
-    float velocity = 0.1f;
+    float position = 0.0;
+    float velocity = 1.1f;
     while (true) {
       // 自定义循环逻辑
       // 依次为速度，运控，位置模式, 电流，CSP位置
 
       auto [position_feedback, velocity_feedback, torque, temperature] =
-          // motor.send_motion_command(0.0, position, velocity, 0.1f, 0.1f);
-          // motor.RobStrite_Motor_PosPP_control(float Speed, float
-          // Acceleration, float Angle);
-          // motor.RobStrite_Motor_Current_control(float IqCommand, float
-          // IdCommand); motor.send_velocity_mode_command(5.0f);
-          motor.RobStrite_Motor_PosCSP_control(position, velocity);
+          //  motor.send_motion_command(0.0, position, velocity, 1.1f, 0.1f);
+          //   motor.RobStrite_Motor_PosPP_control(velocity, 0.5f, position);
+          //   motor.RobStrite_Motor_Current_control(-0.1);
+          // motor.send_velocity_mode_command(5.0f);
+          motor.RobStrite_Motor_PosCSP_control(velocity, position);
 
       std::this_thread::sleep_for(std::chrono::milliseconds(1)); // loop rate
     }

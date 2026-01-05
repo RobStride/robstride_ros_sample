@@ -381,10 +381,10 @@ RobStrideMotor::RobStrite_Motor_PosPP_control(float Speed, float Acceleration,
   Motor_Set_All.set_acc = Acceleration;
   Motor_Set_All.set_angle = Angle;
 
-  Set_RobStrite_Motor_parameter(0X7025, Motor_Set_All.set_speed, Set_parameter);
+  Set_RobStrite_Motor_parameter(0X7024, Motor_Set_All.set_speed, Set_parameter);
   usleep(1000);
 
-  Set_RobStrite_Motor_parameter(0X7026, Motor_Set_All.set_acc, Set_parameter);
+  Set_RobStrite_Motor_parameter(0X7025, Motor_Set_All.set_acc, Set_parameter);
   usleep(1000);
 
   Set_RobStrite_Motor_parameter(0X7016, Motor_Set_All.set_angle, Set_parameter);
@@ -395,8 +395,7 @@ RobStrideMotor::RobStrite_Motor_PosPP_control(float Speed, float Acceleration,
 
 // 电流模式
 std::tuple<float, float, float, float>
-RobStrideMotor::RobStrite_Motor_Current_control(float IqCommand,
-                                                float IdCommand) {
+RobStrideMotor::RobStrite_Motor_Current_control(float IqCommand) {
   if (drw.run_mode.data != 3) {
     Disenable_Motor(0);
     usleep(1000);
@@ -410,14 +409,10 @@ RobStrideMotor::RobStrite_Motor_Current_control(float IqCommand,
 
   // Store the target values
   Motor_Set_All.set_iq = IqCommand;
-  Motor_Set_All.set_id = IdCommand;
 
   Motor_Set_All.set_iq =
       float_to_uint(Motor_Set_All.set_iq, SCIQ_MIN, SC_MAX, 16);
   Set_RobStrite_Motor_parameter(0X7006, Motor_Set_All.set_iq, Set_parameter);
-  usleep(1000);
-
-  Set_RobStrite_Motor_parameter(0X7007, Motor_Set_All.set_id, Set_parameter);
   usleep(1000);
 
   return std::make_tuple(position_, velocity_, torque_, temperature_);

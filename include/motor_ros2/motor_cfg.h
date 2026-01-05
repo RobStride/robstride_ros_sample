@@ -318,7 +318,7 @@ public:
   std::tuple<float, float, float, float>
   RobStrite_Motor_PosCSP_control(float Speed, float Angle);
   std::tuple<float, float, float, float>
-  RobStrite_Motor_Current_control(float IqCommand, float IdCommand);
+  RobStrite_Motor_Current_control(float IqCommand);
   void RobStrite_Motor_Set_Zero_control();
   void Disenable_Motor(uint8_t clear_error);
   void Set_CAN_ID(uint8_t Set_CAN_ID);
