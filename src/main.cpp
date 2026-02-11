@@ -14,7 +14,7 @@ class MotorControlSample : public rclcpp::Node {
 public:
   MotorControlSample()
       : rclcpp::Node("motor_control_set_node"),
-        motor(RobStrideMotor("can0", 0xFF, 0x01, 0)) {
+        motor(RobStrideMotor("can4", 0xFF, 0x01, 0)) {
 
     motor.Get_RobStrite_Motor_parameter(0x7005);
     usleep(1000);
@@ -31,7 +31,7 @@ public:
   }
 
   void excute_loop() {
-    float position = 0.0;
+    float position = 1.57f;
     float velocity = 1.1f;
     while (true) {
       // 自定义循环逻辑
@@ -41,8 +41,8 @@ public:
           //  motor.send_motion_command(0.0, position, velocity, 1.1f, 0.1f);
           //   motor.RobStrite_Motor_PosPP_control(velocity, 0.5f, position);
           //   motor.RobStrite_Motor_Current_control(-0.1);
-          // motor.send_velocity_mode_command(5.0f);
-          motor.RobStrite_Motor_PosCSP_control(velocity, position);
+          motor.send_velocity_mode_command(5.0f);
+          // motor.RobStrite_Motor_PosCSP_control(velocity, position);
 
       std::this_thread::sleep_for(std::chrono::milliseconds(1)); // loop rate
     }

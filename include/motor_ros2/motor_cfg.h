@@ -157,7 +157,7 @@ static const std::map<ActuatorType, ActuatorOperation>
          {
              4 * M_PI,
              20,
-             60,
+             36,
              5000.0,
              100.0,
          }},
